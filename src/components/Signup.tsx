@@ -14,16 +14,13 @@ import {
   FormControl,
   FormHelperText,
   InputRightElement,
-  Alert,
-  AlertIcon,
-  useToast,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { login, signup } from "@/api/user";
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -49,11 +46,7 @@ type FormData = z.infer<typeof schema>;
 const Signup = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleShowClick = () => setShowPassword(!showPassword);
-
   const {
     register,
     handleSubmit,
@@ -61,6 +54,9 @@ const Signup = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+  const navigate = useNavigate();
+
+  const handleShowClick = () => setShowPassword(!showPassword);
 
   const onSubmit = (data: FormData) => {
     setIsLoading(true);
@@ -79,6 +75,7 @@ const Signup = () => {
         .then((res) => {
           console.log(res);
           setIsLoading(false);
+          navigate("/");
         })
         .catch((e) => {
           console.log(e);

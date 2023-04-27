@@ -1,7 +1,7 @@
 /**
  * 用户相关的接口
  */
-import request from "@/utils/api-service";
+import request from "@/utils/axios";
 import { BaseRes } from "@/api/types/common";
 
 export interface LoginReq {
