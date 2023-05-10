@@ -15,8 +15,22 @@ export interface signUpReq {
   nickname: string;
 }
 
+export interface LoginRes {
+  user: User;
+  token: string;
+}
+
+export interface User {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string;
+  username: string;
+  nickName: string;
+}
+
 export const login = (data: LoginReq) => {
-  return request<BaseRes<string>>({
+  return request<BaseRes<LoginRes>>({
     method: "POST",
     url: "/login",
     data,
@@ -24,7 +38,7 @@ export const login = (data: LoginReq) => {
 };
 
 export const signup = (data: LoginReq) => {
-  return request<BaseRes<string>>({
+  return request<BaseRes<LoginRes>>({
     method: "POST",
     url: "/signup",
     data,

@@ -1,7 +1,8 @@
-import ErrorPage from "../error-page.tsx";
+import ErrorPage from "@/error-page.tsx";
 import { createBrowserRouter } from "react-router-dom";
-import Signup from "../components/Signup.tsx";
-import App from "../App.tsx";
+import SignUp from "@/pages/Signup";
+import Login from "@/pages/Login";
+import App from "@/App.tsx";
 
 const route = createBrowserRouter([
   {
@@ -11,12 +12,12 @@ const route = createBrowserRouter([
     children: [{}],
   },
   {
-    path: "login",
-    element: <Signup />,
+    path: "/login",
+    element: <Login />,
   },
   {
-    path: "sign",
-    element: <Signup />,
+    path: "/sign",
+    element: <SignUp />,
   },
 ]);
 

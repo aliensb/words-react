@@ -20,7 +20,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { login, signup } from "@/api/user";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -30,12 +30,8 @@ const schema = z.object({
     .string()
     .min(3, { message: "Username must be at least 3 characters !!!" }),
   nickname: z
-    .union([
-      z.string().length(0),
-      z.string().min(4, { message: "Name must be at least 3 characters !!!" }),
-    ])
-    .optional()
-    .transform((e) => (e === "" ? undefined : e)),
+    .string()
+    .min(4, { message: "Name must be at least 3 characters !!!" }),
   password: z
     .string()
     .min(6, { message: "password must be at least 6 characters" }),
@@ -43,8 +39,8 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const Signup = () => {
-  const [isSignup, setIsSignup] = useState(false);
+const LandingPage = () => {
+  const isSign = useLoaderData() as boolean;
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -60,33 +56,20 @@ const Signup = () => {
 
   const onSubmit = (data: FormData) => {
     setIsLoading(true);
-    if (isSignup) {
-      signup(data)
-        .then((res) => {
-          console.log(res);
-          setIsLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          setIsLoading(false);
-        });
-    } else {
-      login(data)
-        .then((res) => {
-          console.log(res);
-          setIsLoading(false);
-          navigate("/");
-        })
-        .catch((e) => {
-          console.log(e);
-          setIsLoading(false);
-        });
-    }
+    signup(data)
+      .then((res) => {
+        debugger;
+        console.log(res);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   return (
     <>
-      {" "}
       <Flex
         flexDirection="column"
         width="100wh"
@@ -125,22 +108,22 @@ const Signup = () => {
                     />
                   </InputGroup>
                 </FormControl>
-                {isSignup && (
-                  <FormControl>
-                    <InputGroup>
-                      <InputLeftElement
-                        pointerEvents="none"
-                        children={<CFaUserAlt color="gray.300" />}
-                      />
-                      <Input
-                        type="text"
-                        {...register("nickname")}
-                        isInvalid={errors.nickname ? true : false}
-                        placeholder="NickName"
-                      />
-                    </InputGroup>
-                  </FormControl>
-                )}
+
+                <FormControl>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<CFaUserAlt color="gray.300" />}
+                    />
+                    <Input
+                      type="text"
+                      {...register("nickname")}
+                      isInvalid={errors.nickname ? true : false}
+                      placeholder="NickName"
+                    />
+                  </InputGroup>
+                </FormControl>
+
                 <FormControl>
                   <InputGroup>
                     <InputLeftElement
@@ -161,11 +144,6 @@ const Signup = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                  {!isSignup && (
-                    <FormHelperText textAlign="right">
-                      <Link>forgot password?</Link>
-                    </FormHelperText>
-                  )}
                 </FormControl>
                 <Button
                   borderRadius={0}
@@ -175,7 +153,7 @@ const Signup = () => {
                   width="full"
                   isLoading={isLoading}
                 >
-                  {isSignup ? "Sign Up" : "Login"}
+                  Sign Up
                 </Button>
               </Stack>
             </form>
@@ -183,13 +161,8 @@ const Signup = () => {
         </Stack>
 
         <Box>
-          {!isSignup && "New to us?"}
-          <Link
-            color="teal.500"
-            href="#"
-            onClick={() => setIsSignup(!isSignup)}
-          >
-            {isSignup ? "Login" : "New to us?"}
+          <Link color="teal.500" href="#" onClick={() => navigate("/login")}>
+            Login
           </Link>
         </Box>
       </Flex>
@@ -197,4 +170,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default LandingPage;

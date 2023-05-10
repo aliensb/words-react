@@ -34,6 +34,6 @@ request.interceptors.response.use(
 );
 export default async <T = any>(config: AxiosRequestConfig) => {
   const res = await request(config);
-  console.log(res);
+  debugger;
   return res.data as T;
 };
